@@ -1,3 +1,3 @@
-/*то-же самое, что и в предыдущих, только добавляется объединение двух условий через and*/
-USE cd;
-SELECT facility FROM facilities WHERE membercost <= monthlymaintenance / 50 AND membercost !=0;
+use cd;
+/*Выбрать объекты, которые платны для членов клуба, но стоимость использование не превышает 1/50 от стоимость месячного обслуживания */
+SELECT facility  FROM facilities  WHERE membercost != 0 and membercost/monthlymaintenance <= 1/50;

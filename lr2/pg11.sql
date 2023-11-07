@@ -1,5 +1,6 @@
-/*создаём новый столбец, называем его "расположение" и в нём указываем то, откуда был взят объект, после объединяем две таблицы через UNION*/
+/* вывод объединенных имен членов и названий объектов 
+в одну таблицу с одним столбцом */
 USE cd;
-SELECT firstname AS 'объединение'  FROM members
-UNION
-SELECT facility AS 'объект' FROM facilities;
+SELECT firstname AS 'Firstname/Facilities' FROM members WHERE firstname != 'Guest'
+UNION ALL
+SELECT facility FROM facilities;
