@@ -1,18 +1,19 @@
-/*Классифицируйте объекты на группы одинакового размера 
-(высокие, средние и низкие в зависимости от их доходов). 
+/*Классифицируйте объекты на группы одинакового размера (высокие, средние и низкие в зависимости от их доходов). 
 Упорядочите по классификации и названию объекта.
 Примечание: используйте функцию деления на группы ntile.*/
-USE cd;
-SELECT facility, 
-CASE 
-  WHEN NTILE(3) OVER (ORDER BY revenue) = 1 THEN 'Высокий доход'
-  WHEN NTILE(3) OVER (ORDER BY revenue) = 2 THEN 'Средний доход'
-  WHEN NTILE(3) OVER (ORDER BY revenue) = 3 THEN 'Низкий доход'
-END AS incomegroup
-FROM (
-  SELECT f.facility, SUM(IF(b.memid = 0, f.guestcost * b.slots, f.membercost * b.slots)) AS revenue
-  FROM facilities f
-  JOIN bookings b ON f.facid = b.facid
-  GROUP BY f.facility
-) AS subquery
-ORDER BY incomegroup, facility;
+use cd;
+-- Task-5-17: Классифицируйте объекты на группы одинакового размера (высокие, средние и низкие в зависимости от их доходов).
+-- Упорядочите по классификации и названию объекта. используйте функцию деления на группы ntile.
+SELECT facility, DOXOD, 
+       CASE NTILE(3) OVER(ORDER BY DOXOD DESC)
+         WHEN 1 THEN '1 (Высокий доход)'
+         WHEN 2 THEN '2 (Средний доход)' 
+         ELSE '3 (Низкий доход)'
+       END AS cl
+  FROM (SELECT f.facility,
+			   SUM(CASE WHEN m.surname like "guest" THEN f.guestcost ELSE f.membercost END * b.slots) AS DOXOD 
+		  FROM members m, bookings b, facilities f
+		  WHERE b.memid = m.memid
+			AND b.facid = f.facid
+		  GROUP BY f.facility) AS ST
+  ORDER BY cl, facility;
